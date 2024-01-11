@@ -1,0 +1,31 @@
+name: Python CI/CD Workflow
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.8
+
+    - name: Install dependencies
+      run: pip install -r requirements.txt
+
+    - name: Run Script
+      run: python mlops.py
+
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: trained_models
+        path: trained_model.pkl
